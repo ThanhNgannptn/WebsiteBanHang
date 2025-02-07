@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebsiteBanHang.Models.ChiTietPhieuNhap>
+
+@{
+    ViewBag.Title = "Danh Sách Phiếu Nhập";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="mb-3">
+    <a href="@Url.Action("NhapHang", "QuanLyPhieuNhap")" class="btn btn-success">Nhập hàng</a>
+    <a href="@Url.Action("DSSPHetHang", "QuanLyPhieuNhap")" class="btn btn-info">Danh Sách Sản Phẩm Hết Hàng</a>
+</div>
+
+<!-- Filter Form -->
+<form method="get" action="@Url.Action("DSPN")">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="fromDate">Từ Ngày</label>
+            <input type="date" id="fromDate" name="fromDate" class="form-control" value="@Request.QueryString["fromDate"]" />
+        </div>
+        <div class="col-md-3">
+            <label for="toDate">Đến Ngày</label>
+            <input type="date" id="toDate" name="toDate" class="form-control" value="@Request.QueryString["toDate"]" />
+        </div>
+        <div class="col-md-3">
+            <label for="productName">Tên Sản Phẩm</label>
+            <input type="text" id="productName" name="productName" class="form-control" value="@Request.QueryString["productName"]" />
+        </div>
+        <div class="col-md-3" style="margin-top: 32px;">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+            <!-- Reset Filter Button -->
+            <a href="@Url.Action("DSPN")" class="btn btn-secondary">Xóa Lọc</a>
+        </div>
+    </div>
+</form>
+
+<!-- Display Results in Table -->
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>MaPN</th>
+            <th>Ngày Nhập</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Số Lượng</th>
+            <th>Đơn Giá Nhập</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MaPN</td>
+                <td>@item.NgayNhap</td>
+                <td>@item.TenSP</td>
+                <td>@item.SoLuongNhap</td>
+                <td>@item.DonGiaNhap</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,9 @@
+﻿@media print {
+	.form-section {
+		display: none !important; /* Ẩn toàn bộ form khi in */
+	}
+
+	.btn {
+		display: none !important; /* Ẩn các nút khi in */
+	}
+}

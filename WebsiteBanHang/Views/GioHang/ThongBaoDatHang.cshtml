@@ -1,0 +1,98 @@
+﻿@model WebsiteBanHang.Models.DonDatHang
+
+@{
+    ViewBag.Title = "Thông báo đặt hàng thành công";
+    Layout = null;  // Bỏ layout để không có header và footer
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: red;
+            font-size: 24px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+            table th, table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+
+        .btn-primary {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Thông báo đặt hàng thành công</h2>
+
+    <p>Cảm ơn bạn đã đặt hàng. Đơn hàng của bạn sẽ được giao trong vòng 2-3 ngày kể từ khi đặt hàng.</p>
+
+    <h3>Chi tiết đơn hàng</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ChiTietDonDatHangs)
+            {
+                <tr>
+                    <td>@item.TenSP</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.Dongia</td>
+                    <td>@(item.SoLuong * item.Dongia)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="total">Tổng tiền: @Model.ChiTietDonDatHangs.Sum(x => x.SoLuong * x.Dongia)</p>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Tiếp tục mua hàng</a>
+</body>
+</html>

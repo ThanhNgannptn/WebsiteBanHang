@@ -1,0 +1,170 @@
+﻿@using WebsiteBanHang.Models
+@model List<ItemGioHang>
+
+@{
+    ViewBag.Title = "XemGiỏHàng";
+    Layout = "~/Views/Layout/RegisterLayout.cshtml";
+}
+
+@if (Model == null || Model.Count == 0)
+{
+    <h1 style="color:crimson">Giỏ hàng rỗng</h1>
+}
+else
+{
+    <div class="container" style="text-align:left;">
+
+        <!-- Notification for added to cart -->
+        <div id="notification" class="alert alert-success" style="display:none; position: fixed; top: 10px; right: 10px; z-index: 1000;">
+            Sản phẩm đã được thêm vào giỏ hàng!
+        </div>
+
+        @using (Html.BeginForm("DatHang", "GioHang", FormMethod.Post, new { @id = "myform" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            if (Session["TaiKhoan"] == null)
+            {
+                <div class="register">
+                    <h1>Thông tin khách hàng</h1>
+                    @Html.Hidden("MaThanhVien", 1)
+                    <div class="col-md-6 register-top-grid">
+                        <div>
+                            <span>Tên khách hàng</span>
+                            @Html.TextBox("TenKH", null, new { @class = "form-control", @id = "TenKH" })
+                            @Html.ValidationMessage("TenKH", "", new { @class = "text-danger" }) <!-- Error message -->
+                        </div>
+                        <div>
+                            <span>Địa chỉ</span>
+                            @Html.TextBox("DiaChi", null, new { @class = "form-control", @id = "DiaChi" })
+                            @Html.ValidationMessage("DiaChi", "", new { @class = "text-danger" }) <!-- Error message -->
+                        </div>
+                    </div>
+                    <div class="col-md-6 register-top-grid">
+                        <div>
+                            <span>Email</span>
+                            @Html.TextBox("Email", null, new { @class = "form-control", @id = "Email" })
+                            @Html.ValidationMessage("Email", "", new { @class = "text-danger" }) <!-- Error message -->
+                        </div>
+                        <div>
+                            <span>Điện thoại</span>
+                            @Html.TextBox("SoDienThoai", null, new { @class = "form-control", @id = "SoDienThoai" })
+                            @Html.ValidationMessage("SoDienThoai", "", new { @class = "text-danger" }) <!-- Error message -->
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            }
+
+            <div class="check">
+                <h1 style="color:#000000">Giỏ hàng (@ViewBag.TongSoLuong)</h1>
+                <div class="col-md-9 cart-items">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-header">
+                            <a href="@Url.Action("SuaGioHang", new { @MaSP = item.MaSP })" class="editIcon">
+                                <i class="fas fa-pen-square fa-lg" style="color: rgba(239, 95, 33);"></i>
+                            </a>
+                            <a href="@Url.Action("XoaGioHang",new {@MaSP = item.MaSP })" class="delIcon"><i class="fas fa-trash fa-lg" style="color: rgba(239, 95, 33);"></i> </a>
+
+                            <div class="cart-sec simpleCart_shelfItem">
+                                <div class="cart-item cyc">
+                                    <img src="@Url.Content("~/Content/HinhAnhSP/" + item.HinhAnh)" class="img-responsive" alt="" />
+                                </div>
+                                <div class="cart-item-info">
+                                    <h3><a href="#">@item.TenSP</a></h3>
+                                    <ul class="qty">
+                                        <li><p>Số lượng: @item.SoLuong</p></li>
+                                        <li><p>Đơn giá: @item.DonGia.ToString("#,##") VNĐ</p></li>
+                                    </ul>
+                                    <div class="delivery">
+                                        <p style="font-weight:bold;">Thành Tiền: @item.ThanhTien.ToString("#,##") VNĐ</p>
+                                        <span>Giao hàng trong 2-3 ngày làm việc.</span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-3 cart-total">
+                    <a class="continue btn btn-primary" href="@Url.Action("Index", "Home")">Tiếp tục mua hàng</a>
+                    <div class="price-details">
+                        <h3>Đơn giá chi tiết</h3>
+                        <span>Tổng cộng</span>
+                        <span class="total1">@ViewBag.TongTien.ToString("#,##")</span>
+                        <span>Giảm giá</span>
+                        <span class="total1">---</span>
+                        <div class="clearfix"></div>
+                    </div>
+                    <ul class="total_price">
+                        <li class="last_price"> <h4>Tổng cộng</h4></li>
+                        <li class="last_price"><span>@ViewBag.TongTien.ToString("#,##") VNĐ</span></li>
+                        <div class="clearfix"> </div>
+                    </ul>
+                    <div class="clearfix"></div>
+                    <div class="payment-method">
+                        <h2>Phương thức thanh toán</h2>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhuongThucThanhToan" id="cod" value="COD" checked>
+                            <label class="form-check-label" for="cod">
+                                Thanh toán khi nhận hàng (COD)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhuongThucThanhToan" id="bankTransfer" value="BankTransfer">
+                            <label class="form-check-label" for="bankTransfer">
+                                Chuyển khoản ngân hàng
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="PhuongThucThanhToan" id="creditCard" value="CreditCard">
+                            <label class="form-check-label" for="creditCard">
+                                Thẻ tín dụng / Thẻ ghi nợ
+                            </label>
+                        </div>
+
+                        <!-- QR Code Section -->
+                        <div id="qrCodeSection" style="display:none; margin-top: 20px;">
+                            <h3>Quý khách vui lòng chuyển khoản với nội dung:</h3>
+                            <h3>"<span id="orderCode"></span>"</h3>
+                            <div>
+                                <img id="qrCodeImage" src="~/Content/images/istockphoto-1095468748-612x612.jpg" alt="QR Code" class="img-fluid" />
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Đặt hàng" id="btnDatHang" class="order btn btn-primary" />
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        }
+        <style>
+            .text-danger {
+                color: red !important; /* Đảm bảo màu đỏ hiển thị rõ ràng */
+            }
+
+            /* Tuỳ chỉnh thêm thông báo lỗi */
+            .field-validation-error {
+                color: red; /* Đảm bảo lỗi hiển thị màu đỏ */
+                font-size: 0.9em; /* Kích thước chữ nhỏ hơn để thông báo dễ đọc */
+                font-weight: bold; /* Làm chữ đậm để nổi bật */
+            }
+        </style>
+
+        <script>
+            // Toggle visibility of QR code section based on payment method selection
+            document.querySelectorAll('input[name="PhuongThucThanhToan"]').forEach(function (element) {
+                element.addEventListener('change', function () {
+                    var qrCodeSection = document.getElementById('qrCodeSection');
+                    if (document.getElementById('bankTransfer').checked) {
+                        qrCodeSection.style.display = 'block';
+                        document.getElementById('orderCode').textContent = 'Mã đơn hàng #12345'; // Dynamic order code here
+                    } else {
+                        qrCodeSection.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+    </div>
+}

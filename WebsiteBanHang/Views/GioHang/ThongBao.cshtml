@@ -1,0 +1,33 @@
+﻿@using WebsiteBanHang.Models
+@model List<ItemGioHang>
+
+@{
+    ViewBag.Title = "XemGiỏHàng";
+    Layout = "~/Views/Layout/RegisterLayout.cshtml";
+}
+
+<style>
+    .content-container {
+        margin: 50px auto; /* Khoảng cách cách đều header và footer */
+        max-width: 1200px; /* Chiều rộng tối đa cho nội dung */
+        padding: 20px; /* Khoảng cách bên trong khung nội dung */
+        background-color: #f9f9f9; /* Màu nền cho khung nội dung */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng nhẹ */
+        border-radius: 8px; /* Bo tròn các góc */
+    }
+
+    footer {
+        background-color: #f1f1f1;
+        padding: 10px 20px;
+        text-align: center;
+    }
+
+    header {
+        margin-bottom: 20px; /* Khoảng cách dưới của header */
+    }
+</style>
+
+<div class="content-container">
+    <h2>Sản phẩm đã hết hàng không đặt tiếp</h2>
+    <!-- Nội dung chính của trang -->
+</div>

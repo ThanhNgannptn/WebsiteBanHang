@@ -1,0 +1,74 @@
+﻿@using CaptchaMvc.HtmlHelpers
+@using CaptchaMvc
+@model WebsiteBanHang.Models.ThanhVien
+@{
+    ViewBag.Title = "Quên mật khẩu";
+    Layout = "~/Views/Layout/RegisterLayout.cshtml";
+}
+
+<style>
+    .forgot-password-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+        .forgot-password-container input[type="text"],
+        .forgot-password-container input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .forgot-password-container input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .forgot-password-container input[type="submit"]:hover {
+                background-color: #218838;
+            }
+
+    .error-message {
+        color: crimson;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="forgot-password-container">
+        <h2>Quên mật khẩu</h2>
+        @using (Html.BeginForm("QuenMatKhau", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "error-message" })
+
+            <div>
+                <span>@Html.LabelFor(m => m.Email)</span>
+                @Html.TextBoxFor(m => m.Email, new { @placeholder = "Nhập email của bạn" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "error-message" })
+            </div>
+
+            <div>
+                @Html.Captcha(5)
+                @if (!string.IsNullOrEmpty(ViewBag.Message as string))
+                {
+                    <div class="error-message">
+                        @ViewBag.Message
+                    </div>
+                }
+            </div>
+
+            <input type="submit" value="Xác nhận">
+        }
+    </div>
+</div>

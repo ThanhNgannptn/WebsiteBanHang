@@ -1,0 +1,87 @@
+﻿@using WebsiteBanHang.Models
+@model WebsiteBanHang.Models.ThanhVien
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin thành viên";
+    Layout = "~/Views/Layout/TVLayout.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<form asp-action="ChinhSua" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MaThanhVien)
+
+    <!-- Hiển thị Tài Khoản nhưng không cho chỉnh sửa -->
+    <div class="form-group">
+        <label asp-for="TaiKhoan" class="control-label">Tài khoản</label>
+        <input type="text" class="form-control" id="TaiKhoan" name="TaiKhoan" value="@Model.TaiKhoan" readonly />
+        @Html.ValidationMessageFor(model => model.TaiKhoan, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Hiển thị Loại Thành Viên nhưng không cho chỉnh sửa -->
+    <div class="form-group">
+        <label asp-for="MaLoaiTV" class="control-label">Loại thành viên</label>
+        <input type="text" class="form-control" id="MaLoaiTV" name="MaLoaiTV" value="@Model.MaLoaiTV" readonly />
+        @Html.ValidationMessageFor(model => model.MaLoaiTV, "", new { @class = "text-danger" })
+    </div>
+
+    <!-- Các trường thông tin khác -->
+    <div class="form-group">
+        <label asp-for="HoTen" class="control-label">Họ và tên</label>
+        @Html.TextBoxFor(model => model.HoTen, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+        @Html.TextBoxFor(model => model.DiaChi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="control-label">Email</label>
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SoDienThoai" class="control-label">Số điện thoại</label>
+        @Html.TextBoxFor(model => model.SoDienThoai, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SoDienThoai, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
+        <input type="password" id="MatKhau" name="MatKhau" class="form-control" value="@Model.MatKhau" />
+        <input type="checkbox" id="togglePassword" class="mt-2" /> Hiển thị mật khẩu
+        @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label asp-for="CauHoi" class="control-label">Câu hỏi bảo mật</label>
+        @Html.TextBoxFor(model => model.CauHoi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CauHoi, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CauTraLoi" class="control-label">Câu trả lời bảo mật</label>
+        @Html.TextBoxFor(model => model.CauTraLoi, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CauTraLoi, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="submit" value="Chỉnh sửa" class="btn btn-sm btn-primary" />
+            @Html.ActionLink("Trở về", "Index", null, htmlAttributes: new { @class = "btn btn-sm btn-secondary" })
+        </div>
+    </div>
+</form>

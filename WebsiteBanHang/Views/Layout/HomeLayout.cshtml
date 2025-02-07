@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>FATACO2</title>
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="~/Content/fontawesome/css/all.css" rel="stylesheet" type="text/css" media="all">
+    <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" media="all">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link href="~/Content/css/Home_style.css" rel="stylesheet" type="text/css" media="all">
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="New Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet" type="text/css"><!--//fonts-->
+    <!-- start menu -->
+    <link href="~/Content/css/memenu.css" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="~/Content/js/memenu.js"></script>
+    <script>$(document).ready(function () { $(".memenu").memenu(); });</script>
+    <script src="~/Content/js/simpleCart.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body>
+    <!--header-->
+    <div class="header">
+        @Html.Partial("~/Views/Layout//HeaderTopPartial.cshtml")
+        <div class="container">
+            <div class="head-top">
+                <div class="logo">
+                    <a href="#"><img src="images/logo.png" alt=""></a>
+                </div>
+                @Html.Action("MenuPartial", "Home")
+
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div class="banner">
+        <div class="container">
+            <script src="~/Content/js/responsiveslides.min.js"></script>
+            <script>
+                $(function () {
+                    $("#slider").responsiveSlides({
+                        auto: true,
+                        nav: true,
+                        speed: 500,
+                        namespace: "callbacks",
+                        pager: true,
+                    });
+                });
+            </script>
+            <div id="top" class="callbacks_container">
+                <ul class="rslides callbacks callbacks1" id="slider">
+                        <li id="callbacks1_s0" class="" style="display: block; float: none; position: absolute; opacity: 0; z-index: 1; transition: opacity 500ms ease-in-out 0s;">
+
+                            <div class="banner-text">
+                                <h3>HONDA VISON</h3>
+                                <p>Với thiết kế thân thiện và tinh tế, được trang bị động cơ 110cc, hệ thống phun xăng điện tử PGM – FI, làm mát bằng không khí cho khả năng tiết kiệm nhiên liệu vượt trội, vận hành êm ái, tiện ích vượt trội, VISION đã trở thành mẫu xe tay ga tiêu chuẩn thế hệ mới được đông đảo khách hàng ưa chuộng.</p>
+                                <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+                            </div>
+
+                        </li>
+                        <li id="callbacks1_s1" class="callbacks1_on" style="float: left; position: relative; opacity: 1; z-index: 2; display: list-item; transition: opacity 500ms ease-in-out 0s;">
+
+                            <div class="banner-text">
+                                <h3>SUZUKI </h3>
+                                <p>Hãng xe Suzuki là một thương hiệu nổi tiếng thuộc công ty Mô tô Suzuki Nhật Bản. Đây là một công ty đa quốc gia chuyên sản xuất và phân phối các loại phương tiện giao thông từ xe mô tô, ô tô, xe tải đến các loại container đầu kéo… Hiện nay hãng có đến 15 nhà máy sản xuất ô tô đặt tại 14 quốc gia và 113 nhà phân phối đặt tại 119 quốc gia trên toàn thế giới trong đó có Việt Nam.</p>
+                                <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+
+                            </div>
+
+                        </li>
+                        <li id="callbacks1_s2" class="" style="float: none; position: absolute; opacity: 0; z-index: 1; display: list-item; transition: opacity 500ms ease-in-out 0s;">
+                            <div class="banner-text">
+                                <h3>YAMAHA</h3>
+                                <p>Đại diện hãng cho biết, với "Master art of street – Kiệt tác nghệ thuật đường phố" lần này sẽ là bước đi táo bạo, lần đầu tiên được Yamaha áp dụng trên các dòng xe của hãng. Sự kiện công bố trực tuyến dự kiến diễn ra ngày 5/9. "Bên cạnh việc đẩy mạnh chương trình ưu đãi cho khách mua xe, Yamaha Motor Việt Nam </p>
+                                <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+
+                            </div>
+
+                        </li>
+                    </ul>
+                    <a href="#" class="callbacks_nav callbacks1_nav prev">Previous</a><a href="#" class="callbacks_nav callbacks1_nav next">Next</a><ul class="callbacks_tabs callbacks1_tabs"><li class="callbacks1_s1"><a href="#" class="callbacks1_s1">1</a></li><li class="callbacks1_s2 callbacks_here"><a href="#" class="callbacks1_s2">2</a></li><li class="callbacks1_s3"><a href="#" class="callbacks1_s3">3</a></li></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!--content-->
+    <div class="content">
+        @RenderBody()
+
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="footer-top-at">
+
+                <div class="col-md-4 amet-sed">
+                    <h4>MORE INFO</h4>
+                    <ul class="nav-bottom">
+                        <li><a href="#">How to order</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="contact.html">Location</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Membership</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 amet-sed ">
+                    <h4>CONTACT US</h4>
+
+                    <p>
+                        Bến Tre
+                    </p>
+                    <p>HEAD FATACO 2</p>
+                    <p>office:  +12 34 995 0792</p>
+                    <ul class="social">
+                        <li><a href="#"><i> </i></a></li>
+                        <li><a href="#"><i class="twitter"> </i></a></li>
+                        <li><a href="#"><i class="rss"> </i></a></li>
+                        <li><a href="#"><i class="gmail"> </i></a></li>
+
+                    </ul>
+                </div>
+                <div class="col-md-4 amet-sed">
+                    <h4>Newsletter</h4>
+                    <p>
+                        Sign Up to get all news update
+                        and promo
+                    </p>
+                    <form>
+                        <input type="text" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
+                        <input type="submit" value="Sign up">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <div class="footer-class">
+            <p> </p>
+        </div>
+    </div>
+
+
+</body>
+</html>

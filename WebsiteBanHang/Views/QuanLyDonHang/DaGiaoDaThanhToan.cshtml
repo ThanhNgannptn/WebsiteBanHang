@@ -1,0 +1,71 @@
+﻿@using WebsiteBanHang.Models;
+@model IEnumerable<DonDatHang>
+@{
+    ViewBag.Title = "Quản lí đơn hàng";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+    WebGrid grid = new WebGrid(source: Model, rowsPerPage: 10);
+}
+
+<div class="card">
+    <div class="card-body">
+        <h2 class="col-md-8">Quản lí đơn hàng (Đã thanh toán & đã giao )</h2>
+        <br />
+
+        <!-- Navigation Pills -->
+        <ul class="nav nav-pills nav-justified">
+            <li class="nav-item"><a class="nav-link" href="@Url.Action("ChuaThanhToan","QuanLyDonHang")">CHƯA THANH TOÁN</a></li>
+            <li class="nav-item"><a class="nav-link" href="@Url.Action("ChuaGiao","QuanLyDonHang")">ĐÃ THANH TOÁN & CHƯA GIAO</a></li>
+            <li class="nav-item"><a class="nav-link active" href="@Url.Action("DaGiaoDaThanhToan","QuanLyDonHang")">ĐÃ THANH TOÁN & ĐÃ GIAO</a></li>
+        </ul>
+        <br />
+
+        <!-- Filter Form -->
+        @using (Html.BeginForm("DaGiaoDaThanhToan", "QuanLyDonHang", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="startDate">Ngày Bắt Đầu</label>
+                    <input type="date" name="startDate" value="@Request["startDate"]" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label for="endDate">Ngày Kết Thúc:</label>
+                    <input type="date" name="endDate" value="@Request["endDate"]" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label for="customerName">Tên Khách Hàng:</label>
+                    <input type="text" name="customerName" value="@Request["customerName"]" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Lọc</button>
+                    <a href="@Url.Action("DaGiaoDaThanhToan")" class="btn btn-secondary"style="margin-top: 24px;">Xóa Lọc</a>
+                </div>
+            </div>
+        }
+        <br />
+
+        <!-- Display Table -->
+        @if (grid != null)
+        {
+            <div id="list" class="table-responsive">
+                @grid.GetHtml(
+                      tableStyle: "table table-bordered table-hover",
+                      headerStyle: "",
+                      footerStyle: "text-center",
+                      numericLinksCount: 10,
+                      mode: WebGridPagerModes.All, firstText: "Trang đầu", lastText: "Trang cuối",
+                      columns: grid.Columns(
+                          grid.Column("MaDDH", "Mã đơn hàng"),
+                          grid.Column("MaKH", "Họ tên KH", format: p => p.MaKH != null ? p.KhachHang.TenKH : ""),
+                          grid.Column("NgayDat", "Ngày đặt"),
+                          grid.Column("TinhTrangGiaoHang", "Tình trạng giao hàng"),
+                          grid.Column("NgayGiao", "Ngày giao"),
+                          grid.Column("DaThanhToan", "Đã thanh toán"),
+                          grid.Column("UuDai", "Ưu đãi"),
+                          grid.Column("DaHuy", "Đã hủy"),
+                          grid.Column(format: p => Html.ActionLink("Duyệt đơn", "DuyetDonHang", new { id = p.MaDDH }, new { @target = "_blank" }))
+                      )
+                )
+            </div>
+        }
+    </div>
+</div>

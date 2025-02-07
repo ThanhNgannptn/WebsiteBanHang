@@ -1,0 +1,68 @@
+﻿@using WebsiteBanHang.Models;
+@model IEnumerable<WebsiteBanHang.Models.ThanhVien>
+@{
+    ViewBag.Title = "Thông tin khách hàng thành viên";
+    Layout = "~/Views/Layout/TVLayout.cshtml";
+}
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông tin khách hàng thành viên</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        @if (Model == null || !Model.Any())
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Không tìm thấy thông tin thành viên khách hàng!</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên khách hàng</th>
+                                        <th>Vai trò</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Email</th>
+                                        <th>Chỉnh sửa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model)
+                                    {
+                                        <tr>
+                                            <td>@customer.HoTen</td>
+                                            <td>@(customer.MaLoaiTV == 3 ? "Khách hàng" : "Admin")</td>
+                                            <td>@customer.DiaChi</td>
+                                            <td>@customer.SoDienThoai</td>
+                                            <td>@customer.Email</td>
+                                            <td>
+                                                <!-- Nút chỉnh sửa -->
+                                                <a href="@Url.Action("ChinhSua", "KhachHang", new { id = customer.MaThanhVien })" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                                </a>
+                                            </td>
+                                          
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+</section>

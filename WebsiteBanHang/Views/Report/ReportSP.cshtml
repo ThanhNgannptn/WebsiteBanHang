@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Báo cáo top 10 sản phẩm bán chạy";
+}
+
+<h2>Báo Cáo Doanh Thu Từ @ViewBag.StartDate đến @ViewBag.EndDate</h2>
+
+<div>
+    <p><strong>Tổng doanh thu:</strong> @ViewBag.TotalRevenue VNĐ</p>
+</div>
+
+<div>
+    @if (ViewBag.SalesData != null && ViewBag.SalesData.Count > 0)
+    {
+        <h4>Danh sách sản phẩm bán ra:</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng bán</th>
+                    <th>Doanh thu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.SalesData)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.QuantitySold</td>
+                        <td>@item.Revenue VNĐ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có dữ liệu bán hàng trong khoảng thời gian này.</p>
+    }
+</div>

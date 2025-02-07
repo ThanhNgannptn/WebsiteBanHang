@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Báo Cáo";
+    Layout = "~/Views/Layout/AdminLayout.cshtml";
+}
+
+<h2>Báo Cáo</h2>
+
+<div class="card">
+    <div class="card-body">
+        <!-- Phần form được bọc trong .form-section -->
+        <div class="form-section">
+            <form method="get" action="@Url.Action("ReportDT", "Report")" onsubmit="return validateDates()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="fromDate">Chọn từ ngày</label>
+                        <input type="date" id="fromDate" name="fromDate" class="form-control" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="toDate">Chọn đến ngày</label>
+                        <input type="date" id="toDate" name="toDate" class="form-control" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="reportType">Chọn loại báo cáo</label>
+                        <select id="reportType" name="reportType" class="form-control">
+                            <option value="Revenue">Doanh thu</option>
+                            <option value="Quantity">Số lượng sản phẩm bán ra</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Tạo báo cáo</button>
+                        <button type="button" class="btn btn-success" onclick="printReport()">In báo cáo</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-body">
+            <!-- Hiển thị thông tin báo cáo -->
+            @if (ViewBag.ReportData != null)
+            {
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h4>Thông tin báo cáo</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>@(ViewBag.ReportType == "Revenue" ? "Doanh thu (VNĐ)" : "Số lượng sản phẩm")</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    decimal total = 0;  // Declare total here
+                                }
+                                @foreach (var item in ViewBag.ReportData)
+                                {
+                                    <tr>
+                                        <td>@item.Date</td>
+                                        <td>@item.Value</td>
+                                    </tr>
+                                    {
+                                        total += item.Value;  // Sum the values inside the loop
+                                    }
+                                }
+                                <tr>
+                                    <td><strong>Tổng cộng</strong></td>
+                                    <td><strong>@total</strong></td>  <!-- Display the total -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- CSS ẩn phần form-section và các nút khi in -->
+<link rel="stylesheet" href="~/Content/site.css" />
+<script type="text/javascript">
+    // Set max date to today's date for both fromDate and toDate
+    document.getElementById('fromDate').max = new Date().toISOString().split("T")[0];
+    document.getElementById('toDate').max = new Date().toISOString().split("T")[0];
+
+    function validateDates() {
+        var fromDate = document.getElementById('fromDate').value;
+        var toDate = document.getElementById('toDate').value;
+
+        // Check if fromDate and toDate are valid and within the current date range
+        if (fromDate > toDate) {
+            alert("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.");
+            return false;
+        }
+
+        if (new Date(fromDate) > new Date() || new Date(toDate) > new Date()) {
+            alert("Ngày chọn phải nhỏ hơn hoặc bằng ngày hiện tại.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function printReport() {
+        // Lấy nội dung của bảng báo cáo
+        var content = document.querySelector('.card-body').innerHTML;
+
+        // Lấy giá trị của reportType từ ViewBag và chuyển thành chuỗi trong JavaScript
+        var reportType = '@(ViewBag.ReportType)';
+        var reportTitle = "Báo cáo " + (reportType == "Revenue" ? "Doanh thu" : "Số lượng sản phẩm bán ra");
+
+        // Lấy giá trị ngày in
+        var printDate = "Ngày in: " + new Date().toLocaleDateString();
+
+        // Lấy giá trị từ ngày và đến ngày người dùng đã chọn
+        var fromDate = document.getElementById('fromDate').value;
+        var toDate = document.getElementById('toDate').value;
+
+        // Kiểm tra xem người dùng đã chọn ngày hay chưa
+        var dateRange = "";
+        if (fromDate && toDate) {
+            dateRange = "Từ ngày: " + formatDate(fromDate) + " đến ngày: " + formatDate(toDate);
+        }
+
+        // Mở cửa sổ in mới
+        var printWindow = window.open('', '', 'height=500, width=800');
+        printWindow.document.write('<html><head><title>' + reportTitle + '</title>');
+        printWindow.document.write('<style>');
+        printWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; }');
+        printWindow.document.write('h3 { text-align: center; font-size: 20px; }');
+        printWindow.document.write('h4 { text-align: center; font-size: 18px; }');
+        printWindow.document.write('table { width: 100%; border-collapse: collapse; margin-top: 20px; }');
+        printWindow.document.write('table, th, td { border: 1px solid black; }');
+        printWindow.document.write('th, td { padding: 8px 12px; text-align: center; }');
+        printWindow.document.write('th { background-color: #f2f2f2; }');
+
+        // CSS cho việc ẩn các phần không cần thiết khi in
+        printWindow.document.write('.form-section, .btn { display: none; }');
+
+        // Thêm media query để ẩn các phần không cần thiết khi in
+        printWindow.document.write('@@media print { .form-section, .btn { display: none; } }');
+
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+
+        // Thêm tiêu đề báo cáo và thông tin công ty
+        printWindow.document.write('<h3>Công ty TNHH kinh doanh xuất nhập khẩu tổng hợp Fataco Bến Tre</h3>');
+        printWindow.document.write('<h4>' + reportTitle + '</h4>');
+        printWindow.document.write('<p>' + printDate + '</p>');
+
+        // Kiểm tra và hiển thị ngày bắt đầu và kết thúc
+        if (dateRange) {
+            printWindow.document.write('<p>' + dateRange + '</p>');  // Thêm dòng "Từ ngày đến ngày"
+        }
+
+        // Chèn nội dung báo cáo vào cửa sổ in
+        printWindow.document.write(content);
+        printWindow.document.write('<div style="position: absolute; bottom: 20px; right: 20px; text-align: right;">');
+        printWindow.document.write('<strong>Ký tên:</strong><br/><br/><br/><br/>');
+        printWindow.document.write('<strong>................................</strong>');
+        printWindow.document.write('</div>');
+        printWindow.document.write('</body></html>');
+        printWindow.document.close(); // Đóng tài liệu
+        printWindow.print(); // Mở hộp thoại in
+    }
+
+    // Hàm định dạng lại ngày cho dễ đọc (ví dụ: từ "2025-01-05" thành "05/01/2025")
+    function formatDate(dateString) {
+        var date = new Date(dateString);
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var year = date.getFullYear();
+        return day + "/" + month + "/" + year;
+    }
+</script>
